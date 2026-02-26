@@ -113,9 +113,21 @@ const Cart = () => {
           >
             Continue Shopping
           </Link>
-          <button className="bg-primary text-primary-foreground text-xs tracking-[0.25em] uppercase px-12 py-4 transition-opacity duration-300 hover:opacity-80">
-            Checkout
-          </button>
+          <a
+            href={`https://wa.me/1234567890?text=${encodeURIComponent(
+              `Hello Maru by Maru! I'd like to place an order:\n\n${items
+                .map(
+                  (item) =>
+                    `• ${item.product.name} (Size: ${item.size}) x${item.quantity} — $${item.product.price * item.quantity}`
+                )
+                .join("\n")}\n\nTotal: $${totalPrice}`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary text-primary-foreground text-xs tracking-[0.25em] uppercase px-12 py-4 transition-opacity duration-300 hover:opacity-80 text-center"
+          >
+            Order via WhatsApp
+          </a>
         </div>
       </div>
     </div>

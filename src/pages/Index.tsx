@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero.png";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
+
+const reviews = [
+  { name: "Amina K.", text: "The quality is unmatched. I feel so elegant every time I wear my Maru dress.", location: "Lagos" },
+  { name: "Sarah M.", text: "Minimalist perfection. The silhouette is timeless and the fabric is divine.", location: "London" },
+  { name: "Fatima O.", text: "I've never received so many compliments. Maru by Maru understands modern femininity.", location: "Dubai" },
+  { name: "Chioma A.", text: "Simple, refined, and beautifully crafted. This is luxury without the noise.", location: "Abuja" },
+];
 
 const Index = () => {
   const featured = products.slice(0, 4);
@@ -11,16 +17,21 @@ const Index = () => {
     <div>
       {/* Hero */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <img
-          src={heroImage}
-          alt="Maru by Maru editorial"
-          className="absolute inset-0 w-full h-full object-cover object-top"
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-background/30" />
         <div className="relative z-10 text-center px-6">
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-wide mb-6 animate-fade-in">
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-wide mb-6 animate-fade-in text-primary-foreground">
             Timeless Dresses. Pure Expression.
           </h1>
-          <p className="text-sm md:text-base tracking-[0.15em] mb-10 animate-fade-in-delay">
+          <p className="text-sm md:text-base tracking-[0.15em] mb-10 animate-fade-in-delay text-primary-foreground">
             Designed for simplicity. Crafted for presence.
           </p>
           <Link
@@ -65,6 +76,25 @@ const Index = () => {
           </div>
         </section>
       )}
+
+      {/* Reviews */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-t border-foreground/10">
+        <h2 className="font-serif text-3xl md:text-4xl tracking-wide text-center mb-16">
+          What Our Clients Say
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          {reviews.map((review, i) => (
+            <div key={i} className="text-center md:text-left">
+              <p className="font-serif text-lg md:text-xl leading-relaxed mb-6 italic">
+                "{review.text}"
+              </p>
+              <p className="text-xs tracking-[0.2em] uppercase">
+                {review.name} — {review.location}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Brand Story */}
       <section className="px-6 md:px-12 py-20 md:py-28 border-t border-foreground/10">
