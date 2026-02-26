@@ -26,7 +26,7 @@ const Index = () => {
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-background/30" />
+        
         <div className="relative z-10 text-center px-6">
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-wide mb-6 animate-fade-in text-primary-foreground">
             Timeless Dresses. Pure Expression.
