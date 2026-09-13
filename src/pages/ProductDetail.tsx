@@ -51,7 +51,7 @@ const ProductDetail = () => {
           <h1 className="font-serif text-3xl md:text-4xl tracking-wide mb-3">
             {product.name}
           </h1>
-          <p className="text-sm tracking-wide mb-8">${product.price}</p>
+          <p className="text-sm tracking-wide mb-8">R{product.price}</p>
           <p className="text-sm leading-relaxed mb-8 max-w-md">
             {product.description}
           </p>

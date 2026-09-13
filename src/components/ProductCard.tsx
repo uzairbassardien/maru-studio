@@ -17,7 +17,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         />
       </div>
       <h3 className="font-serif text-lg tracking-wide">{product.name}</h3>
-      <p className="text-xs tracking-wide mt-1">${product.price}</p>
+      <p className="text-xs tracking-wide mt-1">R{product.price}</p>
     </Link>
   );
 };

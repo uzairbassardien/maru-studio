@@ -94,7 +94,7 @@ const Cart = () => {
 
             {/* Price */}
             <div className="md:col-span-2 text-right text-sm">
-              ${item.product.price * item.quantity}
+              R{item.product.price * item.quantity}
             </div>
           </div>
         ))}
@@ -102,7 +102,7 @@ const Cart = () => {
         {/* Total */}
         <div className="flex justify-between items-center pt-8">
           <span className="text-xs tracking-[0.2em] uppercase">Total</span>
-          <span className="font-serif text-2xl">${totalPrice}</span>
+          <span className="font-serif text-2xl">R{totalPrice}</span>
         </div>
 
         {/* Checkout */}
@@ -118,9 +118,9 @@ const Cart = () => {
               `Hello Maru by Maru! I'd like to place an order:\n\n${items
                 .map(
                   (item) =>
-                    `• ${item.product.name} (Size: ${item.size}) x${item.quantity} — $${item.product.price * item.quantity}`
+                    `- ${item.product.name} (Size: ${item.size}) x${item.quantity} - R${item.product.price * item.quantity}`
                 )
-                .join("\n")}\n\nTotal: $${totalPrice}`
+                  .join("\n")}\n\nTotal: R${totalPrice}`
             )}`}
             target="_blank"
             rel="noopener noreferrer"
