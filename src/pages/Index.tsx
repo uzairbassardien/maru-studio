@@ -12,6 +12,9 @@ const reviews = [
 const Index = () => {
   const featured = products.slice(0, 4);
   const newArrivals = products.filter((p) => p.category === "new");
+  const featuredSkirt = products.find(
+    (product) => product.id === "tia-crepe-line-wrap-skirt-black"
+  );
 
   return (
     <div>
@@ -73,6 +76,37 @@ const Index = () => {
             {newArrivals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+        </section>
+      )}
+
+      {featuredSkirt && (
+        <section className="px-4 md:px-8 py-20 md:py-28 border-t border-foreground/10">
+          <div className="mx-auto max-w-[1500px]">
+            <div className="group relative overflow-hidden rounded-[14px] shadow-[0_22px_55px_rgba(22,22,22,0.14)]">
+              <img
+                src={featuredSkirt.images[0]}
+                alt={featuredSkirt.name}
+                className="w-full h-[450px] md:h-[620px] object-cover object-center scale-[1.16] md:scale-[1.12] transition-all duration-700 ease-out group-hover:scale-[1.2]"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-r from-[rgba(17,17,17,0.28)] via-[rgba(17,17,17,0.08)] to-[rgba(17,17,17,0.24)]" />
+
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[230px] rounded-[14px] bg-[rgba(255,255,255,0.92)] p-4 shadow-[0_22px_50px_rgba(0,0,0,0.28)] backdrop-blur-[6px] ring-0 md:right-10 md:w-[340px] md:p-7">
+                <p className="text-[9px] md:text-[10px] tracking-[0.28em] uppercase text-foreground/70 mb-3 md:mb-4">
+                  Soft lines
+                </p>
+                <p className="font-serif text-2xl md:text-4xl leading-[1.05] text-foreground mb-5 md:mb-6">
+                  Easy confidence.
+                </p>
+                <Link
+                  to="/shop"
+                  className="inline-flex items-center justify-center bg-[#f4efe9] px-5 py-3 text-[9px] md:text-[10px] tracking-[0.22em] uppercase text-foreground transition-all duration-300 hover:bg-foreground hover:text-background hover:shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
+                >
+                  Shop More
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
       )}
