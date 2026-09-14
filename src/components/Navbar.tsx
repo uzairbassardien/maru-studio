@@ -17,7 +17,7 @@ const Navbar = () => {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-10 text-xs tracking-[0.2em] uppercase">
           <Link to="/shop" className="hover-underline">Shop</Link>
-          <Link to="/about" className="hover-underline">About</Link>
+          <Link to="/about" className="hover-underline">Abouts</Link>
           <Link to="/cart" className="hover-underline">
             Cart{totalItems > 0 && ` (${totalItems})`}
           </Link>
