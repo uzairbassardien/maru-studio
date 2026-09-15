@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
+import { useEffect, useRef, useState } from "react";
 
 const reviews = [
   { name: "Amina K.", text: "The quality is unmatched. I feel so elegant every time I wear my Maru dress.", location: "Lagos" },
@@ -15,6 +16,28 @@ const Index = () => {
   const featuredSkirt = products.find(
     (product) => product.id === "tia-crepe-line-wrap-skirt-black"
   );
+  const brandSectionRef = useRef<HTMLDivElement>(null);
+  const [isBrandVisible, setIsBrandVisible] = useState(false);
+
+  useEffect(() => {
+    const section = brandSectionRef.current;
+
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsBrandVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div>
@@ -83,29 +106,40 @@ const Index = () => {
       {featuredSkirt && (
         <section className="px-4 md:px-8 py-20 md:py-28 border-t border-foreground/10">
           <div className="mx-auto max-w-[1500px]">
-            <div className="group relative overflow-hidden rounded-[14px] shadow-[0_22px_55px_rgba(22,22,22,0.14)]">
+            <div ref={brandSectionRef} className="group relative overflow-hidden rounded-[14px] shadow-[0_22px_55px_rgba(22,22,22,0.14)]">
               <img
                 src={featuredSkirt.images[0]}
                 alt={featuredSkirt.name}
-                className="w-full h-[450px] md:h-[620px] object-cover object-center scale-[1.16] md:scale-[1.12] transition-all duration-700 ease-out group-hover:scale-[1.2]"
+                className="w-full h-[360px] md:h-[500px] object-cover object-center scale-[1.16] md:scale-[1.12] transition-all duration-700 ease-out group-hover:scale-[1.2]"
               />
 
               <div className="absolute inset-0 bg-gradient-to-r from-[rgba(17,17,17,0.28)] via-[rgba(17,17,17,0.08)] to-[rgba(17,17,17,0.24)]" />
 
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[230px] rounded-[14px] bg-[rgba(255,255,255,0.92)] p-4 shadow-[0_22px_50px_rgba(0,0,0,0.28)] backdrop-blur-[6px] ring-0 md:right-10 md:w-[340px] md:p-7">
-                <p className="text-[9px] md:text-[10px] tracking-[0.28em] uppercase text-foreground/70 mb-3 md:mb-4">
-                  Soft lines
+              <div className="absolute left-20 top-[44%] z-10 h-[220px] w-[300px] -translate-y-1/2 text-left md:left-48 md:h-[310px] md:w-[520px]">
+                <p className={`${isBrandVisible ? "animate-fade-in" : "opacity-0"} absolute left-0 top-[22px] whitespace-nowrap font-serif text-7xl font-light italic leading-none tracking-[0.02em] text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.82)] md:top-[30px] md:text-9xl`}>
+                  MARU
                 </p>
-                <p className="font-serif text-2xl md:text-4xl leading-[1.05] text-foreground mb-5 md:mb-6">
-                  Easy confidence.
+                <p className={`${isBrandVisible ? "animate-fade-in-delay" : "opacity-0"} absolute left-2 top-[52px] z-10 whitespace-nowrap font-serif text-8xl font-light italic leading-none tracking-[0.02em] text-black/85 drop-shadow-[0_0_8px_rgba(255,255,255,0.45)] md:left-6 md:top-[78px] md:text-[10rem]`}>
+                  BY
                 </p>
-                <Link
-                  to="/shop"
-                  className="inline-flex items-center justify-center bg-[#f4efe9] px-5 py-3 text-[9px] md:text-[10px] tracking-[0.22em] uppercase text-foreground transition-all duration-300 hover:bg-foreground hover:text-background hover:shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
-                >
-                  Shop More
-                </Link>
+                <p className={`${isBrandVisible ? "animate-fade-in-delay-2" : "opacity-0"} absolute left-0 top-[104px] whitespace-nowrap font-serif text-7xl font-light italic leading-none tracking-[0.02em] text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.82)] md:top-[156px] md:text-9xl`}>
+                  MARU
+                </p>
+                <div className="absolute left-[20%] top-[200px] -translate-x-1/2 whitespace-nowrap text-center md:top-[268px]">
+                  <p className={`${isBrandVisible ? "animate-fade-in-delay-2" : "opacity-0"} font-serif text-sm font-light italic tracking-[0.14em] text-black md:text-lg`}>
+                    <span className="text-white">cute.</span>
+                    <span>classy.</span>
+                    <span className="text-white">confidant</span>
+                  </p>
+                </div>
               </div>
+
+              <Link
+                to="/shop"
+                className="absolute right-28 top-1/2 inline-flex -translate-y-1/2 items-center justify-center bg-[#f4efe9] px-8 py-4 text-[10px] tracking-[0.22em] uppercase text-foreground shadow-[0_12px_28px_rgba(0,0,0,0.24)] transition-all duration-300 hover:bg-foreground hover:text-background hover:shadow-[0_16px_32px_rgba(0,0,0,0.3)] md:right-56 md:px-10 md:py-5 md:text-xs"
+              >
+                Shop More
+              </Link>
             </div>
           </div>
         </section>
