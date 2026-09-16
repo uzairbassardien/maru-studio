@@ -115,18 +115,18 @@ const Index = () => {
 
               <div className="absolute inset-0 bg-gradient-to-r from-[rgba(17,17,17,0.28)] via-[rgba(17,17,17,0.08)] to-[rgba(17,17,17,0.24)]" />
 
-              <div className="absolute left-20 top-[44%] z-10 h-[220px] w-[300px] -translate-y-1/2 text-left md:left-48 md:h-[310px] md:w-[520px]">
-                <p className={`${isBrandVisible ? "animate-fade-in" : "opacity-0"} absolute left-0 top-[22px] whitespace-nowrap font-serif text-7xl font-light italic leading-none tracking-[0.02em] text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.82)] md:top-[30px] md:text-9xl`}>
+              <div className="absolute left-4 top-1/2 z-10 h-[190px] w-[220px] -translate-y-1/2 text-left md:left-48 md:h-[310px] md:w-[520px]">
+                <p className={`${isBrandVisible ? "animate-fade-in" : "opacity-0"} absolute left-0 top-[16px] whitespace-nowrap font-serif text-5xl font-light italic leading-none tracking-[0.02em] text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.82)] md:top-[30px] md:text-9xl`}>
                   MARU
                 </p>
-                <p className={`${isBrandVisible ? "animate-fade-in-delay" : "opacity-0"} absolute left-2 top-[52px] z-10 whitespace-nowrap font-serif text-8xl font-light italic leading-none tracking-[0.02em] text-black/85 drop-shadow-[0_0_8px_rgba(255,255,255,0.45)] md:left-6 md:top-[78px] md:text-[10rem]`}>
+                <p className={`${isBrandVisible ? "animate-fade-in-delay" : "opacity-0"} absolute left-1 top-[48px] z-10 whitespace-nowrap font-serif text-6xl font-light italic leading-none tracking-[0.02em] text-black/85 drop-shadow-[0_0_8px_rgba(255,255,255,0.45)] md:left-6 md:top-[78px] md:text-[10rem]`}>
                   BY
                 </p>
-                <p className={`${isBrandVisible ? "animate-fade-in-delay-2" : "opacity-0"} absolute left-0 top-[104px] whitespace-nowrap font-serif text-7xl font-light italic leading-none tracking-[0.02em] text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.82)] md:top-[156px] md:text-9xl`}>
+                <p className={`${isBrandVisible ? "animate-fade-in-delay-2" : "opacity-0"} absolute left-0 top-[88px] whitespace-nowrap font-serif text-5xl font-light italic leading-none tracking-[0.02em] text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.82)] md:top-[156px] md:text-9xl`}>
                   MARU
                 </p>
-                <div className="absolute left-[20%] top-[200px] -translate-x-1/2 whitespace-nowrap text-center md:top-[268px]">
-                  <p className={`${isBrandVisible ? "animate-fade-in-delay-2" : "opacity-0"} font-serif text-sm font-light italic tracking-[0.14em] text-black md:text-lg`}>
+                <div className="absolute left-[20%] top-[148px] -translate-x-1/2 whitespace-nowrap text-center md:top-[268px]">
+                  <p className={`${isBrandVisible ? "animate-fade-in-delay-2" : "opacity-0"} font-serif text-[10px] font-light italic tracking-[0.14em] text-black md:text-lg`}>
                     <span className="text-white">cute.</span>
                     <span>classy.</span>
                     <span className="text-white">confidant</span>
@@ -136,7 +136,7 @@ const Index = () => {
 
               <Link
                 to="/shop"
-                className="absolute right-28 top-1/2 inline-flex -translate-y-1/2 items-center justify-center bg-[#f4efe9] px-8 py-4 text-[10px] tracking-[0.22em] uppercase text-foreground shadow-[0_12px_28px_rgba(0,0,0,0.24)] transition-all duration-300 hover:bg-foreground hover:text-background hover:shadow-[0_16px_32px_rgba(0,0,0,0.3)] md:right-56 md:px-10 md:py-5 md:text-xs"
+                className="absolute bottom-6 right-4 top-auto inline-flex translate-y-0 items-center justify-center bg-[#f4efe9] px-5 py-3 text-[9px] tracking-[0.18em] uppercase text-foreground shadow-[0_12px_28px_rgba(0,0,0,0.24)] transition-all duration-300 hover:bg-foreground hover:text-background hover:shadow-[0_16px_32px_rgba(0,0,0,0.3)] md:bottom-auto md:right-56 md:top-1/2 md:-translate-y-1/2 md:px-10 md:py-5 md:text-xs"
               >
                 Shop More
               </Link>
