@@ -1,0 +1,245 @@
+import { useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
+import { Check, Loader2 } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import { supabase } from "@/integrations/supabase/client";
+
+interface CustomerDetails {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+  notes: string;
+}
+
+interface PlacedOrder {
+  id: string;
+  order_number: string;
+  total: number;
+}
+
+const initialCustomer: CustomerDetails = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  province: "",
+  postalCode: "",
+  country: "South Africa",
+  notes: "",
+};
+
+const inputClass =
+  "w-full border-0 border-b border-black/30 bg-transparent px-0 py-3 text-sm outline-none transition-colors placeholder:text-black/25 focus:border-black";
+
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat("en-ZA", {
+    style: "currency",
+    currency: "ZAR",
+  }).format(amount);
+
+const Checkout = () => {
+  const { items, totalPrice, clearCart } = useCart();
+  const [customer, setCustomer] = useState(initialCustomer);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [placedOrder, setPlacedOrder] = useState<PlacedOrder | null>(null);
+
+  const updateField = (field: keyof CustomerDetails, value: string) => {
+    setCustomer((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!items.length || isSubmitting) return;
+
+    setError("");
+    setIsSubmitting(true);
+
+    const { data, error: orderError } = await supabase.rpc("place_order", {
+      p_customer: {
+        first_name: customer.firstName.trim(),
+        last_name: customer.lastName.trim(),
+        email: customer.email.trim(),
+        phone: customer.phone.trim(),
+        address_line_1: customer.addressLine1.trim(),
+        address_line_2: customer.addressLine2.trim(),
+        city: customer.city.trim(),
+        province: customer.province.trim(),
+        postal_code: customer.postalCode.trim(),
+        country: customer.country.trim(),
+        notes: customer.notes.trim(),
+      },
+      p_items: items.map((item) => ({
+        product_id: item.product.id,
+        size: item.size,
+        quantity: item.quantity,
+      })),
+    });
+
+    if (orderError) {
+      setError(orderError.message || "Your order could not be placed. Please try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const result = data as unknown as PlacedOrder;
+    setPlacedOrder({ ...result, total: Number(result.total) });
+    clearCart();
+    setIsSubmitting(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (placedOrder) {
+    return (
+      <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center px-6 py-24 text-center">
+        <div className="w-full animate-fade-in">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
+            <Check size={24} />
+          </div>
+          <p className="mt-8 text-[10px] uppercase tracking-[0.3em] text-black/45">Order received</p>
+          <h1 className="mt-3 font-serif text-4xl md:text-6xl">Thank you for your order.</h1>
+          <p className="mt-7 text-sm leading-relaxed text-black/60">
+            Your order number is <strong className="font-medium text-black">{placedOrder.order_number}</strong>.
+            Keep it for your records. We’ll contact you using the details provided to confirm the next steps.
+          </p>
+          <p className="mt-5 font-serif text-2xl">{formatCurrency(placedOrder.total)}</p>
+          <Link
+            to="/shop"
+            className="mt-10 inline-block bg-black px-10 py-4 text-xs uppercase tracking-[0.24em] text-white transition-opacity hover:opacity-75"
+          >
+            Continue shopping
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!items.length) {
+    return (
+      <div className="px-6 py-32 text-center">
+        <h1 className="font-serif text-4xl">Your cart is empty.</h1>
+        <Link to="/shop" className="mt-8 inline-block border-b border-black pb-1 text-xs uppercase tracking-[0.22em]">
+          Return to shop
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-6xl px-6 py-16 md:px-12 md:py-24">
+      <div className="mb-14">
+        <p className="text-[10px] uppercase tracking-[0.28em] text-black/45">Checkout</p>
+        <h1 className="mt-2 font-serif text-5xl md:text-6xl">Place your order</h1>
+      </div>
+
+      <form onSubmit={handleSubmit} className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="space-y-12">
+          <section>
+            <h2 className="border-b border-black pb-4 font-serif text-3xl">Contact</h2>
+            <div className="mt-7 grid gap-7 sm:grid-cols-2">
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                First name
+                <input value={customer.firstName} onChange={(event) => updateField("firstName", event.target.value)} className={inputClass} autoComplete="given-name" required maxLength={100} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                Last name
+                <input value={customer.lastName} onChange={(event) => updateField("lastName", event.target.value)} className={inputClass} autoComplete="family-name" required maxLength={100} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                Email
+                <input type="email" value={customer.email} onChange={(event) => updateField("email", event.target.value)} className={inputClass} autoComplete="email" required maxLength={320} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                Phone
+                <input type="tel" value={customer.phone} onChange={(event) => updateField("phone", event.target.value)} className={inputClass} autoComplete="tel" required maxLength={50} />
+              </label>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="border-b border-black pb-4 font-serif text-3xl">Delivery address</h2>
+            <div className="mt-7 grid gap-7 sm:grid-cols-2">
+              <label className="text-[10px] uppercase tracking-[0.18em] sm:col-span-2">
+                Address
+                <input value={customer.addressLine1} onChange={(event) => updateField("addressLine1", event.target.value)} className={inputClass} autoComplete="address-line1" required maxLength={250} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em] sm:col-span-2">
+                Apartment, suite, etc. <span className="normal-case tracking-normal text-black/35">(optional)</span>
+                <input value={customer.addressLine2} onChange={(event) => updateField("addressLine2", event.target.value)} className={inputClass} autoComplete="address-line2" maxLength={250} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                City
+                <input value={customer.city} onChange={(event) => updateField("city", event.target.value)} className={inputClass} autoComplete="address-level2" required maxLength={120} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                Province
+                <input value={customer.province} onChange={(event) => updateField("province", event.target.value)} className={inputClass} autoComplete="address-level1" required maxLength={120} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                Postal code
+                <input value={customer.postalCode} onChange={(event) => updateField("postalCode", event.target.value)} className={inputClass} autoComplete="postal-code" required maxLength={30} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em]">
+                Country
+                <input value={customer.country} onChange={(event) => updateField("country", event.target.value)} className={inputClass} autoComplete="country-name" required maxLength={120} />
+              </label>
+              <label className="text-[10px] uppercase tracking-[0.18em] sm:col-span-2">
+                Order notes <span className="normal-case tracking-normal text-black/35">(optional)</span>
+                <textarea value={customer.notes} onChange={(event) => updateField("notes", event.target.value)} className={`${inputClass} resize-y`} rows={3} maxLength={1000} placeholder="Delivery instructions or anything we should know" />
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <aside>
+          <div className="border border-black/15 p-6 lg:sticky lg:top-24">
+            <h2 className="font-serif text-3xl">Your order</h2>
+            <div className="mt-6 divide-y divide-black/10 border-y border-black/10">
+              {items.map((item) => (
+                <div key={`${item.product.id}-${item.size}`} className="flex gap-4 py-5">
+                  <div className="relative h-24 w-16 flex-none overflow-hidden bg-black/5">
+                    <img src={item.product.images[0]} alt="" className="h-full w-full object-cover" />
+                    <span className="absolute right-0 top-0 bg-black px-1.5 py-0.5 text-[9px] text-white">{item.quantity}</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-serif text-lg leading-tight">{item.product.name}</p>
+                    <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-black/45">Size {item.size}</p>
+                    <p className="mt-3 text-xs">{formatCurrency(item.product.price * item.quantity)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-between py-6">
+              <span className="text-xs uppercase tracking-[0.2em]">Total</span>
+              <span className="font-serif text-2xl">{formatCurrency(totalPrice)}</span>
+            </div>
+            <p className="mb-5 text-[10px] leading-relaxed text-black/45">
+              Final pricing is verified when the order is submitted. Payment and delivery arrangements will be confirmed with you.
+            </p>
+            {error && <div role="alert" className="mb-5 border border-black p-4 text-xs leading-relaxed">{error}</div>}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex w-full items-center justify-center gap-3 bg-black px-6 py-4 text-xs uppercase tracking-[0.23em] text-white transition-opacity hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {isSubmitting && <Loader2 size={15} className="animate-spin" />}
+              {isSubmitting ? "Placing order" : "Place your order"}
+            </button>
+          </div>
+        </aside>
+      </form>
+    </div>
+  );
+};
+
+export default Checkout;

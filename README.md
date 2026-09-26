@@ -1,73 +1,217 @@
-# Welcome to your Lovable project
+# MaruByMaru2
 
-## Project info
+Create a modern, clean, minimalistic ecommerce website for a fashion brand called Maru by Maru.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Brand Identity
 
-## How can I edit this code?
+Brand name: Maru by Maru
 
-There are several ways of editing your application.
+Industry: Women’s dress fashion
 
-**Use Lovable**
+Aesthetic: Minimal, elegant, refined, timeless
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Color palette:
 
-Changes made via Lovable will be committed automatically to this repo.
+Primary background: Pure white (#FFFFFF)
 
-**Use your preferred IDE**
+Text: Deep black (#000000)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+NO other colors allowed (no greys, no beige, no accent colors)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Typography: Modern serif for headings, clean sans-serif for body
 
-Follow these steps:
+Overall feel: Quiet luxury, high-end, editorial, spacious
+
+Website Structure
+
+1. Homepage
+
+Minimal hero section:
+
+Full-width editorial image of a model wearing a Maru by Maru dress
+
+Centered headline:
+
+“Timeless Dresses. Pure Expression.”
+
+Subtext:
+
+“Designed for simplicity. Crafted for presence.”
+
+Black “Shop Now” button (white text)
+
+Below hero:
+
+Featured Collection (3–4 dresses displayed in grid)
+
+“New Arrivals” section
+
+Minimal brand story preview:
+
+“Maru by Maru creates refined silhouettes for modern women.”
+
+Footer:
+
+Shop
+
+About
+
+Contact
+
+Instagram
+
+Terms & Privacy
+
+2. Shop Page
+
+Clean grid layout (3–4 columns)
+
+White background
+
+Product cards include:
+
+Product image
+
+Dress name
+
+Price
+
+“View Product” or quick add to cart
+
+No borders, no shadows, no color accents
+
+3. Product Page
+
+Minimal layout:
+
+Large product image gallery (left side)
+
+Product details on right:
+
+Dress name
+
+Price
+
+Size selector
+
+Add to Cart button (black background, white text)
+
+Short elegant description
+
+Fabric & care details
+
+Collapsible sections for:
+
+Shipping
+
+Returns
+
+Size Guide
+
+4. About Page
+
+Editorial layout with white space:
+Headline:
+
+“Simplicity is Strength.”
+
+Short brand story focused on:
+
+Timeless silhouettes
+
+Quality fabrics
+
+Minimalism
+
+Modern femininity
+
+Include one large black-and-white image.
+
+5. Cart & Checkout
+
+Clean, distraction-free layout
+
+White background
+
+Black typography
+
+Clear order summary
+
+Minimal form fields
+
+Secure checkout flow
+
+Design Rules (Very Important)
+
+Use ONLY black and white.
+
+No gradients.
+
+No color highlights.
+
+No drop shadows.
+
+No rounded playful buttons — keep edges refined and sharp.
+
+Lots of white space.
+
+Smooth subtle transitions (fade-in only).
+
+Elegant hover effect: text underline or slight opacity change.
+
+Functional Requirements
+
+Fully responsive (mobile-first)
+
+Ecommerce enabled (cart, checkout, product management)
+
+CMS enabled for adding new dresses
+
+SEO optimized structure
+
+Fast loading
+
+Instagram integration
+
+Email subscription (minimal black input field)
+
+Tone of Voice
+
+Sophisticated
+
+Calm
+
+Minimal
+
+Confident
+
+No excessive marketing language
+
+If possible, style inspiration should feel like:
+
+Luxury editorial fashion
+
+Scandinavian minimalism
+
+High-end boutique ecommerce
+
+This project was built with [Lovable](https://lovable.dev).
+
+## Build with Lovable
+
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/738e32b3-9b40-4145-9ed4-80ebd6993910).
+
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+
+## Development
+
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+git clone <this-repository-url>
+cd <repository-name>
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)

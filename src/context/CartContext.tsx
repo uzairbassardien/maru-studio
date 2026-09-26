@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       if (existing) {
         return prev.map((i) =>
           i.product.id === product.id && i.size === size
-            ? { ...i, quantity: i.quantity + 1 }
+            ? { ...i, quantity: Math.min(i.quantity + 1, 10) }
             : i
         );
       }
@@ -52,7 +52,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setItems((prev) =>
       prev.map((i) =>
         i.product.id === productId && i.size === size
-          ? { ...i, quantity }
+          ? { ...i, quantity: Math.min(quantity, 10) }
           : i
       )
     );
@@ -75,6 +75,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// The provider and its hook intentionally share this cart boundary.
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used within CartProvider");

@@ -1,16 +1,22 @@
 import { useParams, Link } from "react-router-dom";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { ProductDetailSkeleton } from "@/components/storefront/ProductSkeletons";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const { data: products = [], isLoading } = useProducts();
   const product = products.find((p) => p.id === id);
   const { addItem } = useCart();
   const [selectedSize, setSelectedSize] = useState("");
   const [added, setAdded] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>(null);
+
+  if (isLoading) {
+    return <ProductDetailSkeleton />;
+  }
 
   if (!product) {
     return (
@@ -59,7 +65,7 @@ const ProductDetail = () => {
           {/* Size selector */}
           <div className="mb-8">
             <p className="text-xs tracking-[0.2em] uppercase mb-3">Size</p>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               {product.sizes.map((size) => (
                 <button
                   key={size}

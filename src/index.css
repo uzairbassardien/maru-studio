@@ -60,6 +60,10 @@
     font-family: var(--font-sans);
   }
 
+  html, body {
+    overflow-x: clip;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     font-weight: 300;
@@ -119,5 +123,102 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@layer components {
+  .store-section {
+    @apply mx-auto max-w-[1440px] px-5 py-14 sm:px-8 md:py-20 lg:px-12 lg:py-24;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-card-alternate {
+    opacity: 1;
+  }
+}
+
+.maru-gallery {
+  --gallery-gap: clamp(12px, 2vw, 20px);
+  --gallery-card-width: clamp(160px, 22vw, 280px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+}
+
+.maru-gallery-track {
+  display: flex;
+  width: max-content;
+  animation: maru-gallery-scroll var(--gallery-duration) linear infinite;
+  will-change: transform;
+}
+
+.maru-gallery-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--gallery-gap);
+  padding-right: var(--gallery-gap);
+}
+
+.maru-gallery-card {
+  flex: 0 0 var(--gallery-card-width);
+  width: var(--gallery-card-width);
+}
+
+@media (max-width: 767px) {
+  .maru-gallery {
+    --gallery-card-width: clamp(170px, 44vw, 320px);
+  }
+
+  .maru-gallery-card {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+@keyframes maru-gallery-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maru-gallery {
+    overflow-x: auto;
+  }
+  .maru-gallery-track {
+    animation: none !important;
+    transform: none;
+    will-change: auto;
+  }
+  .maru-gallery [data-gallery-duplicate="true"],
+  .maru-gallery-track > .maru-gallery-group[aria-hidden="true"] {
+    display: none;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-fade-in, .animate-fade-in-delay, .animate-fade-in-delay-2 {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 600px) {
+  [data-sonner-toaster] {
+    left: 16px !important;
+    right: 16px !important;
+    width: calc(100vw - 32px) !important;
+  }
+
+  [data-sonner-toaster] [data-sonner-toast] {
+    width: 100% !important;
   }
 }

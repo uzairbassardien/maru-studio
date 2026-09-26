@@ -1,0 +1,1 @@
+- Products live in Supabase `products` table; images in private `product-images` bucket (paths stored), served via signed URLs in `useProducts` — workspace blocks public buckets.

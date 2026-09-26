@@ -78,7 +78,8 @@ const Cart = () => {
                 onClick={() =>
                   updateQuantity(item.product.id, item.size, item.quantity + 1)
                 }
-                className="p-1 transition-opacity hover:opacity-60"
+                disabled={item.quantity >= 10}
+                className="p-1 transition-opacity hover:opacity-60 disabled:cursor-not-allowed disabled:opacity-25"
                 aria-label="Increase quantity"
               >
                 <Plus size={14} />
@@ -113,21 +114,12 @@ const Cart = () => {
           >
             Continue Shopping
           </Link>
-          <a
-            href={`https://wa.me/1234567890?text=${encodeURIComponent(
-              `Hello Maru by Maru! I'd like to place an order:\n\n${items
-                .map(
-                  (item) =>
-                    `- ${item.product.name} (Size: ${item.size}) x${item.quantity} - R${item.product.price * item.quantity}`
-                )
-                  .join("\n")}\n\nTotal: R${totalPrice}`
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/checkout"
             className="bg-primary text-primary-foreground text-xs tracking-[0.25em] uppercase px-12 py-4 transition-opacity duration-300 hover:opacity-80 text-center"
           >
-            Order via WhatsApp
-          </a>
+            Place Your Order
+          </Link>
         </div>
       </div>
     </div>
