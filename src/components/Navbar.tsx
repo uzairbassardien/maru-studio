@@ -8,6 +8,7 @@ const navigation = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
   { label: "About", to: "/about" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export default function Navbar() {
@@ -19,7 +20,8 @@ export default function Navbar() {
   const cartLabel = totalItems > 0 ? `Cart (${totalItems})` : "Cart";
   const activePage = location.pathname === "/" ? "/" :
     location.pathname === "/shop" || location.pathname.startsWith("/product/") ? "/shop" :
-    location.pathname === "/about" ? "/about" : null;
+    location.pathname === "/about" ? "/about" :
+    location.pathname === "/contact" ? "/contact" : null;
 
   useEffect(() => { setMobileOpen(false); }, [location.key]);
 

@@ -3,14 +3,6 @@ import { Link } from "react-router-dom";
 // Reuses existing ProductDetail copy. Business owners should review these pages
 // before launch; never add unconfirmed payment, delivery or legal promises here.
 const pages = {
-  contact: {
-    title: "Contact & Customer Care",
-    intro: "A little guidance for your Maru pieces.",
-    sections: [
-      ["An existing order", "Keep your order reference handy. Our team will use the contact details supplied at checkout to confirm your order and next steps."],
-      ["Get in touch", "Our direct customer-care contact details will be published here soon."],
-    ],
-  },
   shipping: {
     title: "Shipping & Delivery",
     intro: "From the Maru collection to your wardrobe.",
