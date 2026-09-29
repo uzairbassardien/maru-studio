@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { ArrowUpRight, Boxes, ExternalLink, LayoutDashboard, LogOut, Menu, Plus, ShoppingBag } from "lucide-react";
+import { ArrowUpRight, Boxes, ExternalLink, LayoutDashboard, LogOut, Menu, Plus, ShoppingBag, Ticket } from "lucide-react";
 import { useAdminAuth } from "@/context/AdminAuthContext";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
@@ -9,6 +9,7 @@ const mobileNavigation = [
   { label: "Products", to: "/admin/products" },
   { label: "Add product", to: "/admin/products/new" },
   { label: "Orders", to: "/admin/orders" },
+  { label: "Discount codes", to: "/admin/coupons" },
 ];
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
@@ -24,7 +25,8 @@ const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const activePage = location.pathname === "/admin/products/new" ? "/admin/products/new" :
     location.pathname.startsWith("/admin/products") ? "/admin/products" :
-    location.pathname.startsWith("/admin/orders") ? "/admin/orders" : "/admin";
+    location.pathname.startsWith("/admin/orders") ? "/admin/orders" :
+    location.pathname.startsWith("/admin/coupons") ? "/admin/coupons" : "/admin";
 
   useEffect(() => { setMobileOpen(false); }, [location.key]);
 
@@ -59,6 +61,9 @@ const AdminLayout = () => {
           </NavLink>
           <NavLink to="/admin/orders" className={navClass}>
             <ShoppingBag size={16} /> Orders
+          </NavLink>
+          <NavLink to="/admin/coupons" className={navClass}>
+            <Ticket size={16} /> Discount codes
           </NavLink>
         </nav>
 

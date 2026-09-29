@@ -47,6 +47,99 @@ export type Database = {
         }
         Relationships: []
       }
+      coupon_redemptions: {
+        Row: {
+          coupon_id: string
+          created_at: string
+          customer_email: string
+          customer_name: string
+          discount_amount: number
+          id: string
+          order_id: string
+        }
+        Insert: {
+          coupon_id: string
+          created_at?: string
+          customer_email: string
+          customer_name?: string
+          discount_amount: number
+          id?: string
+          order_id: string
+        }
+        Update: {
+          coupon_id?: string
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          discount_amount?: number
+          id?: string
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_redemptions_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "coupons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupon_redemptions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coupons: {
+        Row: {
+          code: string
+          created_at: string
+          description: string
+          discount_type: string
+          discount_value: number
+          ends_at: string | null
+          id: string
+          is_active: boolean
+          max_uses: number | null
+          max_uses_per_customer: number
+          min_order_amount: number
+          starts_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string
+          discount_type: string
+          discount_value: number
+          ends_at?: string | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          max_uses_per_customer?: number
+          min_order_amount?: number
+          starts_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string
+          discount_type?: string
+          discount_value?: number
+          ends_at?: string | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          max_uses_per_customer?: number
+          min_order_amount?: number
+          starts_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string
@@ -110,6 +203,8 @@ export type Database = {
           customer_last_name: string
           customer_notes: string
           customer_phone: string
+          discount_amount: number
+          discount_code: string
           id: string
           order_number: string
           shipping_address_line_1: string
@@ -132,6 +227,8 @@ export type Database = {
           customer_last_name: string
           customer_notes?: string
           customer_phone: string
+          discount_amount?: number
+          discount_code?: string
           id?: string
           order_number: string
           shipping_address_line_1: string
@@ -154,6 +251,8 @@ export type Database = {
           customer_last_name?: string
           customer_notes?: string
           customer_phone?: string
+          discount_amount?: number
+          discount_code?: string
           id?: string
           order_number?: string
           shipping_address_line_1?: string
@@ -172,8 +271,6 @@ export type Database = {
       }
       products: {
         Row: {
-          is_featured: boolean
-          is_bestseller: boolean
           care: string
           category: string
           category_id: string | null
@@ -183,6 +280,8 @@ export type Database = {
           id: string
           images: string[]
           is_active: boolean
+          is_bestseller: boolean
+          is_featured: boolean
           name: string
           price: number
           sizes: string[]
@@ -193,14 +292,14 @@ export type Database = {
           care?: string
           category?: string
           category_id?: string | null
-          is_featured?: boolean
-          is_bestseller?: boolean
           created_at?: string
           description?: string
           fabric?: string
           id: string
           images?: string[]
           is_active?: boolean
+          is_bestseller?: boolean
+          is_featured?: boolean
           name: string
           price: number
           sizes?: string[]
@@ -211,14 +310,14 @@ export type Database = {
           care?: string
           category?: string
           category_id?: string | null
-          is_featured?: boolean
-          is_bestseller?: boolean
           created_at?: string
           description?: string
           fabric?: string
           id?: string
           images?: string[]
           is_active?: boolean
+          is_bestseller?: boolean
+          is_featured?: boolean
           name?: string
           price?: number
           sizes?: string[]
@@ -258,15 +357,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      place_order: {
+      _coupon_discount: {
         Args: {
-          p_customer: Json
-          p_items: Json
+          p_code: string
+          p_email: string
+          p_lock: boolean
+          p_subtotal: number
         }
+        Returns: {
+          code: string
+          coupon_id: string
+          discount: number
+        }[]
+      }
+      is_admin: { Args: never; Returns: boolean }
+      place_order: {
+        Args: { p_coupon_code?: string; p_customer: Json; p_items: Json }
+        Returns: Json
+      }
+      validate_coupon: {
+        Args: { p_code: string; p_email: string; p_items: Json }
         Returns: Json
       }
     }

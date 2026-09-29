@@ -114,6 +114,9 @@ const AdminOrderDetail = () => {
             </div>
             <div className="ml-auto mt-2 max-w-xs space-y-3 border-t border-black pt-5 text-sm">
               <div className="flex justify-between"><span className="text-black/50">Subtotal</span><span>{formatCurrency(order.subtotal)}</span></div>
+              {Number(order.discount_amount) > 0 && (
+                <div className="flex justify-between"><span className="text-black/50">Discount ({order.discount_code})</span><span>−{formatCurrency(Number(order.discount_amount))}</span></div>
+              )}
               <div className="flex justify-between"><span className="text-black/50">Shipping</span><span>{formatCurrency(order.shipping_amount)}</span></div>
               <div className="flex justify-between pt-2 font-serif text-2xl"><span>Total</span><span>{formatCurrency(order.total)}</span></div>
             </div>

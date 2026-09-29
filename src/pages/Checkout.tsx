@@ -22,6 +22,12 @@ interface PlacedOrder {
   id: string;
   order_number: string;
   total: number;
+  discount?: number;
+}
+
+interface AppliedCoupon {
+  code: string;
+  discount: number;
 }
 
 const initialCustomer: CustomerDetails = {
@@ -53,6 +59,48 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [placedOrder, setPlacedOrder] = useState<PlacedOrder | null>(null);
+  const [couponInput, setCouponInput] = useState("");
+  const [coupon, setCoupon] = useState<AppliedCoupon | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [isApplying, setIsApplying] = useState(false);
+
+  const cartItemsPayload = () =>
+    items.map((item) => ({ product_id: item.product.id, size: item.size, quantity: item.quantity }));
+
+  const applyCoupon = async () => {
+    const code = couponInput.trim();
+    if (!code || isApplying) return;
+    if (!hasValidEmail) {
+      setCoupon(null);
+      setCouponError("Please fill in your email address first, then try the discount code again.");
+      return;
+    }
+    setCouponError("");
+    setIsApplying(true);
+    const { data, error: couponErr } = await supabase.rpc("validate_coupon", {
+      p_code: code,
+      p_email: customer.email.trim(),
+      p_items: cartItemsPayload(),
+    });
+    setIsApplying(false);
+    if (couponErr) {
+      setCoupon(null);
+      setCouponError(couponErr.message || "This discount code could not be applied.");
+      return;
+    }
+    const result = data as unknown as AppliedCoupon;
+    setCoupon({ code: result.code, discount: Number(result.discount) });
+  };
+
+  const removeCoupon = () => {
+    setCoupon(null);
+    setCouponInput("");
+    setCouponError("");
+  };
+
+  const discount = coupon ? Math.min(coupon.discount, totalPrice) : 0;
+
+  const hasValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email.trim());
 
   const updateField = (field: keyof CustomerDetails, value: string) => {
     setCustomer((current) => ({ ...current, [field]: value }));
@@ -79,21 +127,23 @@ const Checkout = () => {
         country: customer.country.trim(),
         notes: customer.notes.trim(),
       },
-      p_items: items.map((item) => ({
-        product_id: item.product.id,
-        size: item.size,
-        quantity: item.quantity,
-      })),
+      p_items: cartItemsPayload(),
+      p_coupon_code: coupon?.code ?? null,
     });
 
     if (orderError) {
-      setError(orderError.message || "Your order could not be placed. Please try again.");
+      const message = orderError.message || "Your order could not be placed. Please try again.";
+      if (coupon && /discount code|minimum order/i.test(message)) {
+        setCoupon(null);
+        setCouponError(message);
+      }
+      setError(message);
       setIsSubmitting(false);
       return;
     }
 
     const result = data as unknown as PlacedOrder;
-    setPlacedOrder({ ...result, total: Number(result.total) });
+    setPlacedOrder({ ...result, total: Number(result.total), discount: Number(result.discount ?? 0) });
     clearCart();
     setIsSubmitting(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -219,9 +269,50 @@ const Checkout = () => {
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-between py-6">
-              <span className="text-xs uppercase tracking-[0.2em]">Total</span>
-              <span className="font-serif text-2xl">{formatCurrency(totalPrice)}</span>
+            <div className="border-b border-black/10 py-5">
+              <p className="text-[10px] uppercase tracking-[0.18em]">Discount code</p>
+              {!hasValidEmail ? (
+                <div className="mt-3 border border-black/30 p-4 text-xs leading-relaxed">
+                  <p className="font-medium uppercase tracking-[0.15em]">One step first</p>
+                  <p className="mt-2 text-black/60">
+                    Please enter your email address in the Contact section above. Your email is
+                    needed to confirm the discount code is yours to use, then this box unlocks.
+                  </p>
+                </div>
+              ) : coupon ? (
+                <div className="mt-3 flex items-center justify-between text-xs">
+                  <span className="uppercase tracking-[0.15em]">{coupon.code} applied</span>
+                  <button type="button" onClick={removeCoupon} className="border-b border-black pb-0.5 uppercase tracking-[0.15em] hover:opacity-60">Remove</button>
+                </div>
+              ) : (
+                <div className="mt-2 flex items-end gap-3">
+                  <input
+                    value={couponInput}
+                    onChange={(event) => setCouponInput(event.target.value.toUpperCase())}
+                    onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void applyCoupon(); } }}
+                    className={`${inputClass} uppercase`}
+                    placeholder="Enter code"
+                    maxLength={50}
+                    aria-label="Discount code"
+                  />
+                  <button type="button" onClick={() => void applyCoupon()} disabled={!couponInput.trim() || isApplying} className="border border-black px-4 py-2.5 text-[10px] uppercase tracking-[0.2em] transition-opacity hover:opacity-60 disabled:opacity-30">
+                    {isApplying ? "…" : "Apply"}
+                  </button>
+                </div>
+              )}
+              {couponError && <p role="alert" className="mt-3 text-xs leading-relaxed">{couponError}</p>}
+            </div>
+            <div className="space-y-3 py-6">
+              {coupon && (
+                <>
+                  <div className="flex justify-between text-xs"><span className="uppercase tracking-[0.2em]">Subtotal</span><span>{formatCurrency(totalPrice)}</span></div>
+                  <div className="flex justify-between text-xs"><span className="uppercase tracking-[0.2em]">Discount</span><span>−{formatCurrency(discount)}</span></div>
+                </>
+              )}
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase tracking-[0.2em]">Total</span>
+                <span className="font-serif text-2xl">{formatCurrency(totalPrice - discount)}</span>
+              </div>
             </div>
             <p className="mb-5 text-[10px] leading-relaxed text-black/45">
               Final pricing is verified when the order is submitted. Payment and delivery arrangements will be confirmed with you.
