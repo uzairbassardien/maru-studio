@@ -207,6 +207,9 @@ export type Database = {
           discount_code: string
           id: string
           order_number: string
+          paid_at: string | null
+          payment_reference: string
+          payment_status: string
           shipping_address_line_1: string
           shipping_address_line_2: string
           shipping_amount: number
@@ -231,6 +234,9 @@ export type Database = {
           discount_code?: string
           id?: string
           order_number: string
+          paid_at?: string | null
+          payment_reference?: string
+          payment_status?: string
           shipping_address_line_1: string
           shipping_address_line_2?: string
           shipping_amount?: number
@@ -255,6 +261,9 @@ export type Database = {
           discount_code?: string
           id?: string
           order_number?: string
+          paid_at?: string | null
+          payment_reference?: string
+          payment_status?: string
           shipping_address_line_1?: string
           shipping_address_line_2?: string
           shipping_amount?: number

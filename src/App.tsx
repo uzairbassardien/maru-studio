@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
+import PaymentResult from "./pages/PaymentResult";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminOverview from "./pages/admin/AdminOverview";
@@ -57,6 +58,8 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/payment/success" element={<PaymentResult outcome="success" />} />
+                <Route path="/payment/cancelled" element={<PaymentResult outcome="cancelled" />} />
                 {(["shipping", "returns", "size-guide", "faq", "privacy", "terms"] as InformationPage[]).map((page) => (
                   <Route key={page} path={`/${page}`} element={<StoreInformation page={page} />} />
                 ))}

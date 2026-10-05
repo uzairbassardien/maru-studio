@@ -143,11 +143,44 @@ const Checkout = () => {
     }
 
     const result = data as unknown as PlacedOrder;
-    setPlacedOrder({ ...result, total: Number(result.total), discount: Number(result.discount ?? 0) });
+    const { data: pay, error: payError } = await supabase.functions.invoke("payfast-checkout", {
+      body: { action: "start", order_id: result.id, origin: window.location.origin },
+    });
+    if (payError || !pay?.action) {
+      setError("We couldn't connect to PayFast. Please try again in a moment.");
+      setIsSubmitting(false);
+      return;
+    }
     clearCart();
-    setIsSubmitting(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = pay.action;
+    Object.entries(pay.fields as Record<string, string>).forEach(([name, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = name;
+      input.value = value;
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    form.submit();
   };
+
+  if (isSubmitting) {
+    return (
+      <div className="mx-auto flex min-h-[70vh] max-w-xl items-center px-6 py-20 text-center">
+        <div role="status" aria-live="polite" className="w-full">
+          <Loader2 size={28} strokeWidth={1} aria-hidden="true" className="mx-auto animate-spin text-black/60 motion-reduce:animate-none" />
+          <p className="mt-8 text-[10px] uppercase tracking-[0.28em] text-black/45">Secure checkout</p>
+          <h1 className="mt-3 font-serif text-3xl leading-tight sm:text-5xl">Redirecting you to PayFast...</h1>
+          <p className="mx-auto mt-6 max-w-sm text-sm leading-relaxed text-black/60">
+            Please keep this page open while we take you to PayFast to complete your payment.
+          </p>
+          <p className="mt-4 text-xs leading-relaxed text-black/45">This may take a few seconds. Please don’t refresh the page.</p>
+        </div>
+      </div>
+    );
+  }
 
   if (placedOrder) {
     return (
@@ -315,7 +348,7 @@ const Checkout = () => {
               </div>
             </div>
             <p className="mb-5 text-[10px] leading-relaxed text-black/45">
-              Final pricing is verified when the order is submitted. Payment and delivery arrangements will be confirmed with you.
+              Final pricing is verified when the order is submitted. You'll be taken to PayFast to complete payment securely.
             </p>
             {error && <div role="alert" className="mb-5 border border-black p-4 text-xs leading-relaxed">{error}</div>}
             <button
@@ -324,7 +357,7 @@ const Checkout = () => {
               className="flex w-full items-center justify-center gap-3 bg-black px-6 py-4 text-xs uppercase tracking-[0.23em] text-white transition-opacity hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isSubmitting && <Loader2 size={15} className="animate-spin" />}
-              {isSubmitting ? "Placing order" : "Place your order"}
+              {isSubmitting ? "Redirecting to PayFast" : "Pay securely with PayFast"}
             </button>
           </div>
         </aside>

@@ -141,6 +141,13 @@ const AdminOrderDetail = () => {
 
         <aside className="space-y-8">
           <section className="border border-black/10 bg-white p-6">
+            <h2 className="font-serif text-3xl">Payment</h2>
+            <p className="mt-5 text-xs uppercase tracking-[0.16em]">{order.payment_status || "pending"}</p>
+            {order.payment_reference && <p className="mt-3 break-all text-xs leading-6 text-black/55">PayFast reference: {order.payment_reference}</p>}
+            {order.paid_at && <p className="mt-2 text-xs leading-6 text-black/55">Received {formatDate(order.paid_at)}</p>}
+            <p className="mt-4 text-xs leading-6 text-black/45">Updated by PayFast payment confirmation. The order status tracks fulfilment separately.</p>
+          </section>
+          <section className="border border-black/10 bg-white p-6">
             <h2 className="font-serif text-3xl">Customer</h2>
             <p className="mt-6 text-sm">{order.customer_first_name} {order.customer_last_name}</p>
             <a href={`mailto:${order.customer_email}`} className="mt-4 flex items-center gap-3 text-xs text-black/60 hover:text-black"><Mail size={15} /> {order.customer_email}</a>

@@ -1,2 +1,3 @@
 - Products live in Supabase `products` table; images in private `product-images` bucket (paths stored), served via signed URLs in `useProducts` — workspace blocks public buckets.
 - Discount codes: `coupons` + `coupon_redemptions` tables; limits enforced server-side in `place_order`/`validate_coupon` (per-customer by lowercased email, not name) — client totals are display only.
+- Payments: PayFast credentials live only in edge function secrets; `payfast-checkout` signs the form from the DB order total, and only the `payfast-itn` notification marks orders paid (never the return page).
